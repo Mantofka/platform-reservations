@@ -1,0 +1,61 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/mantofka/RiderProjects/ColivingReservationsPlatform/Application/Application.csproj": {}
+  },
+  "projects": {
+    "/Users/mantofka/RiderProjects/ColivingReservationsPlatform/Application/Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/mantofka/RiderProjects/ColivingReservationsPlatform/Application/Application.csproj",
+        "projectName": "Application",
+        "projectPath": "/Users/mantofka/RiderProjects/ColivingReservationsPlatform/Application/Application.csproj",
+        "packagesPath": "/Users/mantofka/.nuget/packages/",
+        "outputPath": "/Users/mantofka/RiderProjects/ColivingReservationsPlatform/Application/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/mantofka/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/opt/homebrew/Cellar/dotnet/8.0.4/libexec/sdk/8.0.104/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

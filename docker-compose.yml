@@ -1,0 +1,12 @@
+﻿services:
+  colivingreservationsplatform:
+    image: colivingreservationsplatform
+    build:
+      context: .
+      dockerfile: ColivingReservationsPlatform/Dockerfile
+
+  lala:
+    image: lala
+    build:
+      context: .
+      dockerfile: lala/Dockerfile
