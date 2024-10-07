@@ -1,0 +1,494 @@
+openapi: 3.0.0
+info:
+  title: Coliving and Room API
+  version: 1.0.0
+  description: API for managing Colivings and Rooms
+servers:
+  - url: http://localhost:5000/api
+    description: Local server
+paths:
+  /coliving:
+    get:
+      summary: Get a paged list of colivings
+      operationId: GetColivings
+      tags:
+        - Coliving
+      responses:
+        '200':
+          description: List of colivings successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ColivingResponseDto'
+        '500':
+          description: Internal server error
+    post:
+      summary: Create a new coliving
+      operationId: CreateColiving
+      tags:
+        - Coliving
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ColivingCreateDto'
+      responses:
+        '201':
+          description: Coliving successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ColivingResponseDto'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: string
+        '500':
+          description: Internal server error
+  /coliving/{id}:
+    get:
+      summary: Get a coliving by ID
+      operationId: GetColivingById
+      tags:
+        - Coliving
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the coliving
+      responses:
+        '200':
+          description: Coliving successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ColivingResponseDto'
+        '404':
+          description: Coliving not found
+    put:
+      summary: Update a coliving by ID
+      operationId: UpdateColiving
+      tags:
+        - Coliving
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the coliving to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ColivingCreateDto'
+      responses:
+        '202':
+          description: Coliving successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ColivingResponseDto'
+        '404':
+          description: Coliving not found
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete a coliving by ID
+      operationId: DeleteColiving
+      tags:
+        - Coliving
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the coliving to delete
+      responses:
+        '204':
+          description: Coliving successfully deleted
+        '404':
+          description: Coliving not found
+        '500':
+          description: Internal server error
+  /room:
+    get:
+      summary: Get a paged list of rooms
+      operationId: GetRooms
+      tags:
+        - Room
+      responses:
+        '200':
+          description: List of rooms successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoomResponseDto'
+        '500':
+          description: Internal server error
+    post:
+      summary: Create a new room
+      operationId: CreateRoom
+      tags:
+        - Room
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomCreateDto'
+      responses:
+        '201':
+          description: Room successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomResponseDto'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: string
+        '500':
+          description: Internal server error
+  /room/{id}:
+    get:
+      summary: Get a room by ID
+      operationId: GetRoomById
+      tags:
+        - Room
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the room
+      responses:
+        '200':
+          description: Room successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomResponseDto'
+        '404':
+          description: Room not found
+    put:
+      summary: Update a room by ID
+      operationId: UpdateRoom
+      tags:
+        - Room
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the room to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomCreateDto'
+      responses:
+        '202':
+          description: Room successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomResponseDto'
+        '404':
+          description: Room not found
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete a room by ID
+      operationId: DeleteRoom
+      tags:
+        - Room
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the room to delete
+      responses:
+        '204':
+          description: Room successfully deleted
+        '404':
+          description: Room not found
+        '500':
+          description: Internal server error
+  /tenant:
+    get:
+      summary: Get a paged list of tenants
+      operationId: GetTenants
+      tags:
+        - Tenant
+      responses:
+        '200':
+          description: List of tenants successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantResponseDto'
+        '500':
+          description: Internal server error
+    post:
+      summary: Create a new tenant
+      operationId: CreateTenant
+      tags:
+        - Tenant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantCreateDto'
+      responses:
+        '201':
+          description: Tenant successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponseDto'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: string
+        '500':
+          description: Internal server error
+  /tenant/{id}:
+    get:
+      summary: Get a tenant by ID
+      operationId: GetTenantById
+      tags:
+        - Tenant
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the tenant
+      responses:
+        '200':
+          description: Tenant successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponseDto'
+        '404':
+          description: Tenant not found
+    put:
+      summary: Update a tenant by ID
+      operationId: UpdateTenant
+      tags:
+        - Tenant
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the tenant to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantCreateDto'
+      responses:
+        '202':
+          description: Tenant successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponseDto'
+        '404':
+          description: Tenant not found
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete a tenant by ID
+      operationId: DeleteTenant
+      tags:
+        - Tenant
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the tenant to delete
+      responses:
+        '204':
+          description: Tenant successfully deleted
+        '404':
+          description: Tenant not found
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    ColivingResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        representerName:
+          type: string
+        rooms:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoomResponseDto'
+    ColivingCreateDto:
+      type: object
+      required:
+        - name
+        - address
+        - representerName
+        - email
+        - phoneNumber
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        name:
+          type: string
+          maxLength: 255
+          description: Coliving name is required.
+        address:
+          type: string
+          maxLength: 255
+          description: Address is required.
+        representerName:
+          type: string
+          maxLength: 255
+          description: Representer Name is required.
+        email:
+          type: string
+          format: email
+          description: Email is required and must be a valid email address.
+        phoneNumber:
+          type: string
+          description: Phone number is required.
+    RoomResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+        number:
+          type: integer
+        description:
+          type: string
+        size:
+          type: number
+          format: float
+        floorNumber:
+          type: integer
+        price:
+          type: number
+          format: float
+        coliving:
+          $ref: '#/components/schemas/ColivingResponseDto'
+        tenants:
+          type: array
+          items:
+            $ref: '#/components/schemas/TenantResponseDto'
+    RoomCreateDto:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        number:
+          type: integer
+        description:
+          type: string
+        size:
+          type: number
+          format: float
+        floorNumber:
+          type: integer
+        price:
+          type: number
+          format: float
+        colivingId:
+          type: string
+    TenantResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        birthDate:
+          type: string
+          format: date-time
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        country:
+          type: string
+        rooms:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoomResponseDto'
+    TenantCreateDto:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        name:
+          type: string
+        surname:
+          type: string
+        birthDate:
+          type: string
+          format: date-time
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        country:
+          type: string

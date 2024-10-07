@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "AZO8r341azFk0klAQOf6LCXo9BRULKt1bXcrYhSxRgnzJzWro6BvN3Y5eEiwRrwiRh2vIXJ/2MvxD2oiLb0epA==",
+  "dgSpecHash": "zu0Nu18z13lsPc445P/ettErjhHs14y2g5Ab660rGJ5B6ih8r+J4UmGmAXAKbfrklvnHTG90DSL7PUK4VrKMdg==",
   "success": true,
   "projectFilePath": "/Users/mantofka/RiderProjects/ColivingReservationsPlatform/Application/Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/mantofka/.nuget/packages/fluentvalidation/11.10.0/fluentvalidation.11.10.0.nupkg.sha512"
+  ],
   "logs": []
 }
