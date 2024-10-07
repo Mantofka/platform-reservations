@@ -1,6 +1,14 @@
+using Infrastructure.Domain.Tenants;
+
 namespace Infrastructure.Persistence.Abstractions;
 
-public class ITenantRepository
+public interface ITenantRepository
 {
-    
+    Task<Tenant[]> GetPagedList();
+
+    Task<Tenant?> GetByIdAsync(Guid id);
+
+    Task<Tenant> CreateAsync(Tenant tenant);
+
+    Task RemoveAsync(Guid id);
 }

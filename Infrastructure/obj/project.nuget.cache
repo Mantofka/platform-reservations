@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Hrrdo13wyioaM/JgNfUyc7TD/NhVwmkNlSRAlXKv0d8JOV3hvMTmyIq+4EtSba/9V8ltx6cdzbcnBBE5iLKudg==",
+  "dgSpecHash": "cqvg5+2Piqr35zNdL7VcIVkVaYgK6BnlisycYO2H2aMCydPV087/ucSiWwUiqHSH438WnvRvO6X/PM5hwpwyxA==",
   "success": true,
   "projectFilePath": "/Users/mantofka/RiderProjects/ColivingReservationsPlatform/Infrastructure/Infrastructure.csproj",
   "expectedPackageFiles": [
+    "/Users/mantofka/.nuget/packages/fluentvalidation/11.10.0/fluentvalidation.11.10.0.nupkg.sha512",
+    "/Users/mantofka/.nuget/packages/fluentvalidation.aspnetcore/11.3.0/fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "/Users/mantofka/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.5.1/fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
     "/Users/mantofka/.nuget/packages/microsoft.entityframeworkcore/8.0.4/microsoft.entityframeworkcore.8.0.4.nupkg.sha512",
     "/Users/mantofka/.nuget/packages/microsoft.entityframeworkcore.abstractions/8.0.4/microsoft.entityframeworkcore.abstractions.8.0.4.nupkg.sha512",
     "/Users/mantofka/.nuget/packages/microsoft.entityframeworkcore.analyzers/8.0.4/microsoft.entityframeworkcore.analyzers.8.0.4.nupkg.sha512",

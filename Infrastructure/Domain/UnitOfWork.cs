@@ -1,21 +1,39 @@
+using Infrastructure.Domain.Colivings.Repositories;
+using Infrastructure.Domain.Rooms.Repositories;
+using Infrastructure.Domain.Tenants.Repositories;
+using Infrastructure.Persistence;
 using Infrastructure.Persistence.Abstractions;
 using Microsoft.EntityFrameworkCore;
-namespace Infrastructure.Persistence.Repositories;
+namespace Infrastructure.Domain;
 
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ColivingReservationsDbContext _context;
     private readonly IColivingRepository _colivingRepository;
+    private readonly IRoomRepository _roomRepository;
+    private readonly ITenantRepository _tenantRepository;
     
     public UnitOfWork(ColivingReservationsDbContext context)
     {
         _context = context;
         _colivingRepository = new ColivingRepository(context);
+        _roomRepository = new RoomRepository(context);
+        _tenantRepository = new TenantRepository(context);
     }
     
     public IColivingRepository GetColivings()
     {
         return _colivingRepository;
+    }
+    
+    public IRoomRepository GetRooms()
+    {
+        return _roomRepository;
+    }
+    
+    public ITenantRepository GetTenants()
+    {
+        return _tenantRepository;
     }
     
     public async Task Commit()
