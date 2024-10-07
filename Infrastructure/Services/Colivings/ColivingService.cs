@@ -1,9 +1,9 @@
-using Application.Abstractions.Coliving;
+using Application.Abstractions.Colivings;
 using Application.Contracts;
 using Infrastructure.Persistence.Abstractions;
-using Infrastructure.Persistence.Abstractions.Models;
+using Infrastructure.Persistence.Abstractions.Models.Coliving;
 
-namespace Infrastructure.Services;
+namespace Infrastructure.Services.Coliving;
 
 public class ColivingService : IColivingService
 {
@@ -29,6 +29,7 @@ public class ColivingService : IColivingService
         {
             Id = coliving.Id,
             Name = coliving.Name,
+            Address = coliving.
         };
 
         return result;

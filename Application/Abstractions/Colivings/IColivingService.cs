@@ -5,4 +5,6 @@ namespace Application.Abstractions.Coliving;
 public interface IColivingService
 {
     Task<ColivingResponseDto[]> GetPagedList();
+    
+    Task<Coliving> Create()
 }
