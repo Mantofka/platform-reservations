@@ -1,3 +1,4 @@
+using Infrastructure.Domain.Tenants;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Abstractions;
 using Infrastructure.Persistence.Abstractions.Models.Coliving;
@@ -18,6 +19,29 @@ public class ColivingRepository : IColivingRepository
     {
         var query = _context.Set<Coliving>().AsQueryable();
         return await query.ToArrayAsync().ConfigureAwait(false);
+    }
+    
+    public async Task<Tenant[]> GetTenants(Guid id, Guid roomId)
+    {
+        var coliving = await _context.Set<Coliving>()
+            .Include(c => c.Rooms)
+            .ThenInclude(r => r.Tenants)
+            .FirstOrDefaultAsync(c => c.Id == id)
+            .ConfigureAwait(false);
+
+        if (coliving == null)
+        {
+            throw new KeyNotFoundException($"Coliving with ID {id} not found.");
+        }
+
+        var room = coliving.Rooms.FirstOrDefault(r => r.Id == roomId);
+
+        if (room == null)
+        {
+            throw new KeyNotFoundException($"Room with ID {roomId} not found in Coliving with ID {id}.");
+        }
+
+        return room.Tenants.ToArray();
     }
     
     public async Task<Coliving> CreateAsync(Coliving coliving)

@@ -8,6 +8,8 @@ public interface IUnitOfWork : IDisposable
 
     ITenantRepository GetTenants();
     
+    IMaintenanceRepository GetMaintenances();
+    
     
     Task Commit();
 

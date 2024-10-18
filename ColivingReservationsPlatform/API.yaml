@@ -123,6 +123,34 @@ paths:
           description: Coliving not found
         '500':
           description: Internal server error
+  /coliving/{id}/room/{roomId}/tenants:
+    get:
+      summary: Get list of tenants from specified coliving and room
+      operationId: GetTenants
+      tags:
+        - Coliving
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: 
+            type: string
+          description: The id of coliving
+        - name: roomId
+          in: path
+          required: true
+          schema: 
+            type: string
+          description: The id of room
+      responses: 
+        '200':
+          description: Tenants successfully retrieved
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/TenantResponseDto'
+        '404':
+          description: Coliving not found    
   /room:
     get:
       summary: Get a paged list of rooms

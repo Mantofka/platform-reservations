@@ -12,4 +12,6 @@ public class Tenant
     public string Email { get; set; }
     public string Country { get; set; }
     public ICollection<Room> Rooms { get; set; } = new List<Room>();
+
+    public ICollection<Maintenance.Maintenance> Maintenances { get; set; } = new List<Maintenance.Maintenance>();
 }

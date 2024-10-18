@@ -13,6 +13,9 @@ public class Room
     public float Price { get; set; }
     public Guid ColivingId { get; set; }
     public Coliving Coliving { get; set; }
-    
+
     public ICollection<Tenant> Tenants { get; set; } = new List<Tenant>();
+
+    public ICollection<Maintenance.Maintenance> Maintenances { get; set; } = new List<Maintenance.Maintenance>();
+
 }
