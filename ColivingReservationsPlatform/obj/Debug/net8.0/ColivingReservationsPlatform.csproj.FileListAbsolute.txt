@@ -301,3 +301,5 @@
 /Users/mantofka/RiderProjects/ColivingReservationsPlatform/ColivingReservationsPlatform/bin/Debug/net8.0/Microsoft.Extensions.Logging.dll
 /Users/mantofka/RiderProjects/ColivingReservationsPlatform/ColivingReservationsPlatform/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
 /Users/mantofka/RiderProjects/ColivingReservationsPlatform/ColivingReservationsPlatform/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
+/Users/mantofka/RiderProjects/ColivingReservationsPlatform/ColivingReservationsPlatform/bin/Debug/net8.0/Shared.dll
+/Users/mantofka/RiderProjects/ColivingReservationsPlatform/ColivingReservationsPlatform/bin/Debug/net8.0/Shared.pdb

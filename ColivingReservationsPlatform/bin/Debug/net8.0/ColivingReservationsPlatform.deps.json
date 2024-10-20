@@ -2394,7 +2394,8 @@
       },
       "Application/1.0.0": {
         "dependencies": {
-          "FluentValidation": "11.10.0"
+          "FluentValidation": "11.10.0",
+          "Shared": "1.0.0"
         },
         "runtime": {
           "Application.dll": {}
@@ -2410,6 +2411,11 @@
         },
         "runtime": {
           "Infrastructure.dll": {}
+        }
+      },
+      "Shared/1.0.0": {
+        "runtime": {
+          "Shared.dll": {}
         }
       }
     }
@@ -3805,6 +3811,11 @@
       "sha512": ""
     },
     "Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Shared/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

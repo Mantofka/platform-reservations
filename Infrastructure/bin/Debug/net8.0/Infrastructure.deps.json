@@ -426,10 +426,16 @@
       },
       "Application/1.0.0": {
         "dependencies": {
-          "FluentValidation": "11.10.0"
+          "FluentValidation": "11.10.0",
+          "Shared": "1.0.0"
         },
         "runtime": {
           "Application.dll": {}
+        }
+      },
+      "Shared/1.0.0": {
+        "runtime": {
+          "Shared.dll": {}
         }
       }
     }
@@ -770,6 +776,11 @@
       "hashPath": "system.text.json.8.0.0.nupkg.sha512"
     },
     "Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Shared/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

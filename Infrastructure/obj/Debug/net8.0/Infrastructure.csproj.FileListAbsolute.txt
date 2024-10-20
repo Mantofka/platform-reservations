@@ -17,3 +17,5 @@
 /Users/mantofka/RiderProjects/ColivingReservationsPlatform/Infrastructure/obj/Debug/net8.0/Infrastructure.pdb
 /Users/mantofka/RiderProjects/ColivingReservationsPlatform/Infrastructure/obj/Debug/net8.0/ref/Infrastructure.dll
 /Users/mantofka/RiderProjects/ColivingReservationsPlatform/Infrastructure/obj/Debug/net8.0/Infrastructure.sourcelink.json
+/Users/mantofka/RiderProjects/ColivingReservationsPlatform/Infrastructure/bin/Debug/net8.0/Shared.dll
+/Users/mantofka/RiderProjects/ColivingReservationsPlatform/Infrastructure/bin/Debug/net8.0/Shared.pdb
