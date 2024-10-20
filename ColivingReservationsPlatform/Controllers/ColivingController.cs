@@ -1,6 +1,8 @@
 using Application.Abstractions.Colivings;
 using Application.Contracts;
+using Application.Contracts.Tenant;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace ColivingReservationsPlatform.Controllers;
 
@@ -33,6 +35,21 @@ public class ColivingController : ControllerBase
             return NotFound();
         }
         return Ok(coliving);
+    }
+    
+    [HttpGet("{id}/room/{roomId}/tenants")]
+    public async Task<ActionResult<ColivingResponseDto>> GetTenants(Guid id, Guid roomId)
+    {
+        try
+        {
+            var tenants = await _service.GetTenants(id, roomId);
+            return Ok(tenants);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+
     }
 
     [HttpPost]

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ColivingReservationsPlatform")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+02224ea1060c8550b59ad4d405e196cb472edbaf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+99921867a08ed7692c3eecb7cc5bdd9e4a4e4ecd")]
 [assembly: System.Reflection.AssemblyProductAttribute("ColivingReservationsPlatform")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ColivingReservationsPlatform")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

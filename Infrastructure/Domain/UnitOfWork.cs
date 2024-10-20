@@ -1,4 +1,5 @@
 using Infrastructure.Domain.Colivings.Repositories;
+using Infrastructure.Domain.Maintenance.Repositories;
 using Infrastructure.Domain.Rooms.Repositories;
 using Infrastructure.Domain.Tenants.Repositories;
 using Infrastructure.Persistence;
@@ -12,6 +13,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly IColivingRepository _colivingRepository;
     private readonly IRoomRepository _roomRepository;
     private readonly ITenantRepository _tenantRepository;
+    private readonly IMaintenanceRepository _maintenanceRepository;
     
     public UnitOfWork(ColivingReservationsDbContext context)
     {
@@ -19,6 +21,7 @@ public class UnitOfWork : IUnitOfWork
         _colivingRepository = new ColivingRepository(context);
         _roomRepository = new RoomRepository(context);
         _tenantRepository = new TenantRepository(context);
+        _maintenanceRepository = new MaintenanceRepository(context);
     }
     
     public IColivingRepository GetColivings()
@@ -34,6 +37,11 @@ public class UnitOfWork : IUnitOfWork
     public ITenantRepository GetTenants()
     {
         return _tenantRepository;
+    }
+    
+    public IMaintenanceRepository GetMaintenances()
+    {
+        return _maintenanceRepository;
     }
     
     public async Task Commit()

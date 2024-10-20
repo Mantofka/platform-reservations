@@ -1,12 +1,14 @@
 using Application.Abstractions.Tenant;
 using Application.Contracts.Tenant;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ColivingReservationsPlatform.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = "administrator,coliving-owner")]
 public class TenantController : ControllerBase
 {
     private readonly ITenantService _service;

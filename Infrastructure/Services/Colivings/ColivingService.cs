@@ -1,9 +1,11 @@
 using Application.Abstractions.Colivings;
 using Application.Contracts;
 using Application.Contracts.Room;
+using Application.Contracts.Tenant;
 using Application.Validators;
 using FluentValidation;
 using FluentValidation.Results;
+using Infrastructure.Domain.Tenants;
 using Infrastructure.Persistence.Abstractions;
 using Infrastructure.Persistence.Abstractions.Models.Coliving;
 
@@ -25,6 +27,31 @@ public class ColivingService : IColivingService
         var entities = await repository.GetPagedList().ConfigureAwait(false);
         
         var result = entities.Select(ToContract).ToArray();
+
+        return result;
+    }
+    
+    public async Task<TenantResponseDto[]> GetTenants(Guid id, Guid roomId)
+    {
+        var repository = _unitOfWork.GetColivings();
+        var entities = await repository.GetTenants(id, roomId).ConfigureAwait(false);
+        
+        var result = entities.Select(ToTenantContract).ToArray();
+
+        return result;
+    }
+    
+    private static TenantResponseDto ToTenantContract(Tenant tenant)
+    {
+        var result = new TenantResponseDto
+        {
+            Id = tenant.Id,
+            Name = tenant.Name,
+            Email = tenant.Email,
+            Surname = tenant.Surname,
+            PhoneNumber = tenant.PhoneNumber,
+            BirthDate = tenant.BirthDate
+        };
 
         return result;
     }

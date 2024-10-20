@@ -16,3 +16,5 @@
 /Users/mantofka/RiderProjects/ColivingReservationsPlatform/Application/bin/Debug/net8.0/FluentValidation.dll
 /Users/mantofka/RiderProjects/ColivingReservationsPlatform/Application/obj/Debug/net8.0/Application.csproj.AssemblyReference.cache
 /Users/mantofka/RiderProjects/ColivingReservationsPlatform/Application/obj/Debug/net8.0/Application.csproj.CopyComplete
+/Users/mantofka/RiderProjects/ColivingReservationsPlatform/Application/bin/Debug/net8.0/Shared.dll
+/Users/mantofka/RiderProjects/ColivingReservationsPlatform/Application/bin/Debug/net8.0/Shared.pdb
