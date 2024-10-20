@@ -69,6 +69,7 @@ $RECYCLE.BIN/
 
 # JetBrains Rider settings directory
 .idea/
+/.idea
 
 # MacOS-specific files
 .DS_Store
@@ -106,6 +107,13 @@ coverage/
 
 # Temporary files
 ~$*
+
+
+# Ignore bin and obj folders
+**/bin/
+**/obj/
+
+
 
 # Default ignored files
 /shelf/
