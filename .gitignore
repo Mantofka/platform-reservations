@@ -109,10 +109,11 @@ coverage/
 ~$*
 
 
-# Ignore bin and obj folders
-**/bin/
-**/obj/
+# # Ignore bin and obj folders
+# **/bin/
+# **/obj/
 
+Infrastructure/obj
 
 
 # Default ignored files

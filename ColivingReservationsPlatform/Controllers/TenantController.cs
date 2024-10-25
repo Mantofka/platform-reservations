@@ -83,6 +83,5 @@ public class TenantController : ControllerBase
         {
             return NotFound("Tenant with provided id not found to delete.");
         }
-
     }
 }
