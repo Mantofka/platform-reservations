@@ -37,7 +37,7 @@ The system supports four types of users: **Guest**, **Resident**, **Dormitory Ad
 ## **Technologies**
 
 - **API**: The server-side API will be built using the `.NET` framework.
-- **User Interface (UI)**: The front-end will be developed using the **React** JavaScript library.
+- **User Interface (UI)**: The front-end will be developed using the **Angular** JavaScript library.
 - **Database**: Data storage and management will be handled by **PostgreSQL**.
 
 **System architecture**
@@ -46,11 +46,16 @@ The system supports four types of users: **Guest**, **Resident**, **Dormitory Ad
 
 **Client:**
 - Accesses the system through a browser.
-**Browser: **
+  
+**Browser:**
 - Firebase: Hosting the Angular frontend.
 - DigitalOcean: Hosting the backend.
-DigitalOcean: Runs the .NET backend, which interacts with:
-PostgreSQL: The database.
+  
+**DigitalOcean: **
+Runs the .NET backend, which interacts with:
+
+**PostgreSQL: **
+The database.
 
 
 
