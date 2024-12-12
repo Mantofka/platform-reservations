@@ -51,10 +51,10 @@ The system supports four types of users: **Guest**, **Resident**, **Dormitory Ad
 - Firebase: Hosting the Angular frontend.
 - DigitalOcean: Hosting the backend.
   
-**DigitalOcean: **
+**DigitalOcean:**
 Runs the .NET backend, which interacts with:
 
-**PostgreSQL: **
+**PostgreSQL:**
 The database.
 
 
