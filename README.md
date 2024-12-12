@@ -40,7 +40,21 @@ The system supports four types of users: **Guest**, **Resident**, **Dormitory Ad
 - **User Interface (UI)**: The front-end will be developed using the **React** JavaScript library.
 - **Database**: Data storage and management will be handled by **PostgreSQL**.
 
-UI wireframes:
+**System architecture**
+
+<img width="597" alt="Screenshot 2024-12-13 at 00 28 36" src="https://github.com/user-attachments/assets/831c6fda-f371-4d49-93e5-1b04fd847e27" />
+
+**Client:**
+- Accesses the system through a browser.
+**Browser: **
+- Firebase: Hosting the Angular frontend.
+- DigitalOcean: Hosting the backend.
+DigitalOcean: Runs the .NET backend, which interacts with:
+PostgreSQL: The database.
+
+
+
+**UI wireframes:**
 
 Dashboard:
 <img width="582" alt="Screenshot 2024-12-12 at 23 29 19" src="https://github.com/user-attachments/assets/eadeefdc-719d-42a9-9369-8f30ebf7306f" />
@@ -55,7 +69,7 @@ Coliving create/update screen
 <img width="1420" alt="Screenshot 2024-12-12 at 23 51 25" src="https://github.com/user-attachments/assets/85685f6d-f7d0-4948-8a3d-1b961c805470" />
 
 
-
+Room create/update screen
 
 <img width="446" alt="Screenshot 2024-12-12 at 23 47 12" src="https://github.com/user-attachments/assets/45ad8411-681e-49a5-869e-5ca535c515c4" />
 
@@ -63,7 +77,7 @@ Coliving create/update screen
 
 
 
-
+Tenants list screen:
 
 <img width="611" alt="Screenshot 2024-12-12 at 23 47 36" src="https://github.com/user-attachments/assets/406132d7-e779-4c51-89b1-a5e268fd10a1" />
 
