@@ -39,3 +39,23 @@ The system supports four types of users: **Guest**, **Resident**, **Dormitory Ad
 - **API**: The server-side API will be built using the `.NET` framework.
 - **User Interface (UI)**: The front-end will be developed using the **React** JavaScript library.
 - **Database**: Data storage and management will be handled by **PostgreSQL**.
+
+UI wireframes:
+
+
+<img width="582" alt="Screenshot 2024-12-12 at 23 29 19" src="https://github.com/user-attachments/assets/eadeefdc-719d-42a9-9369-8f30ebf7306f" />
+
+
+
+<img width="352" alt="Screenshot 2024-12-12 at 23 31 24" src="https://github.com/user-attachments/assets/b2f078c8-d3dd-413a-8cec-90f8ed0d3f5b" />
+
+
+
+<img width="446" alt="Screenshot 2024-12-12 at 23 47 12" src="https://github.com/user-attachments/assets/45ad8411-681e-49a5-869e-5ca535c515c4" />
+
+
+
+<img width="611" alt="Screenshot 2024-12-12 at 23 47 36" src="https://github.com/user-attachments/assets/406132d7-e779-4c51-89b1-a5e268fd10a1" />
+
+
+
