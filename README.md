@@ -42,14 +42,14 @@ The system supports four types of users: **Guest**, **Resident**, **Dormitory Ad
 
 UI wireframes:
 
-
+Dashboard:
 <img width="582" alt="Screenshot 2024-12-12 at 23 29 19" src="https://github.com/user-attachments/assets/eadeefdc-719d-42a9-9369-8f30ebf7306f" />
 
 <img width="1437" alt="Screenshot 2024-12-12 at 23 49 21" src="https://github.com/user-attachments/assets/bcb87cb7-a0d4-4cf4-9d73-009abbfecae6" />
 
 
 
-
+Coliving create/update screen
 <img width="352" alt="Screenshot 2024-12-12 at 23 31 24" src="https://github.com/user-attachments/assets/b2f078c8-d3dd-413a-8cec-90f8ed0d3f5b" />
 
 <img width="1420" alt="Screenshot 2024-12-12 at 23 51 25" src="https://github.com/user-attachments/assets/85685f6d-f7d0-4948-8a3d-1b961c805470" />
@@ -59,11 +59,15 @@ UI wireframes:
 
 <img width="446" alt="Screenshot 2024-12-12 at 23 47 12" src="https://github.com/user-attachments/assets/45ad8411-681e-49a5-869e-5ca535c515c4" />
 
+<img width="1422" alt="Screenshot 2024-12-12 at 23 54 18" src="https://github.com/user-attachments/assets/a907b03f-906f-40c8-bb4e-95b59ba63dc5" />
+
 
 
 
 
 <img width="611" alt="Screenshot 2024-12-12 at 23 47 36" src="https://github.com/user-attachments/assets/406132d7-e779-4c51-89b1-a5e268fd10a1" />
+
+<img width="1440" alt="Screenshot 2024-12-12 at 23 53 51" src="https://github.com/user-attachments/assets/743b02a1-cfce-42f2-81f1-8454ff330dab" />
 
 
 
