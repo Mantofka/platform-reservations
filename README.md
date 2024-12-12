@@ -45,13 +45,21 @@ UI wireframes:
 
 <img width="582" alt="Screenshot 2024-12-12 at 23 29 19" src="https://github.com/user-attachments/assets/eadeefdc-719d-42a9-9369-8f30ebf7306f" />
 
+<img width="1437" alt="Screenshot 2024-12-12 at 23 49 21" src="https://github.com/user-attachments/assets/bcb87cb7-a0d4-4cf4-9d73-009abbfecae6" />
+
+
 
 
 <img width="352" alt="Screenshot 2024-12-12 at 23 31 24" src="https://github.com/user-attachments/assets/b2f078c8-d3dd-413a-8cec-90f8ed0d3f5b" />
 
+<img width="1420" alt="Screenshot 2024-12-12 at 23 51 25" src="https://github.com/user-attachments/assets/85685f6d-f7d0-4948-8a3d-1b961c805470" />
+
+
 
 
 <img width="446" alt="Screenshot 2024-12-12 at 23 47 12" src="https://github.com/user-attachments/assets/45ad8411-681e-49a5-869e-5ca535c515c4" />
+
+
 
 
 
