@@ -6,13 +6,6 @@ The **Coliving Reservation System** is designed to streamline dormitory (colivin
 
 The system supports four types of users: **Tenant**, **Coliving Owner**, and **Administrator**.
 
-### **Guest Capabilities**
-- View available coliving spaces.
-- Log in.
-- Register.
-- Submit a request to live in coliving.
-  - *(Note: At the final stage of the form, users will be asked to log in or register.)*
-
 ### **Resident Capabilities**
 - Track payment history.
 - Make payments.
