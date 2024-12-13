@@ -1,15 +1,26 @@
 using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Create the Startup class instance
 var startup = new Startup(builder.Configuration);
 
-// Configure services
 startup.ConfigureServices(builder.Services);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 using (var scope = app.Services.CreateScope())
 {
@@ -17,16 +28,16 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<ColivingReservationsDbContext>();
-        context.Database.Migrate();
+        await context.Database.MigrateAsync();
     }
     catch (Exception ex)
     {
-        // Handle any exceptions during migration application
         Console.WriteLine($"An error occurred while migrating the database: {ex.Message}");
     }
 }
 
-// Configure the HTTP request pipeline
 startup.Configure(app, app.Environment);
+
+
 
 app.Run();

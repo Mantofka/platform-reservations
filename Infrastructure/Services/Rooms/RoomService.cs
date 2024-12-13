@@ -5,7 +5,10 @@ using Application.Contracts.Tenant;
 using FluentValidation;
 using FluentValidation.Results;
 using Infrastructure.Domain.Rooms;
+using Infrastructure.Domain.RoomTenant;
+using Infrastructure.Domain.Tenants;
 using Infrastructure.Persistence.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Infrastructure.Services.Rooms;
 
@@ -31,6 +34,16 @@ public class RoomService : IRoomService
         return result;
     }
     
+    public async Task<RoomResponseDto[]> GetPagedColivingRoomsList(Guid colivingId)
+    {
+        var repository = _unitOfWork.GetRooms();
+        var entities = await repository.GetPagedColivingRoomList(colivingId).ConfigureAwait(false);
+        
+        var result = entities.Select(ToContract).ToArray();
+
+        return result;
+    }
+    
     private static RoomResponseDto ToContract(Room room)
     {
         var result = new RoomResponseDto
@@ -44,21 +57,18 @@ public class RoomService : IRoomService
             Coliving = new ColivingResponseDto
             {
                 Name = room.Coliving.Name,
-                RepresenterName = room.Coliving.RepresenterName,
-                PhoneNumber = room.Coliving.PhoneNumber,
                 Address = room.Coliving.Address,
                 Id = room.Coliving.Id,
                 Email = room.Coliving.Email,
             },
-            Tenants = room.Tenants.Select(tenant => new TenantResponseDto
+            Tenants = room.Tenants?.Select(tenant => new TenantResponseDto
             {
-                Name = tenant.Name,
-                Surname = tenant.Surname,
-                PhoneNumber = tenant.PhoneNumber,
-                Email = tenant.Email,
+                Name = tenant.User.Name,
+                Surname = tenant.User.Surname,
+                PhoneNumber = tenant.User.PhoneNumber,
+                Email = tenant.User.Email,
                 Id = tenant.Id,
-                Country = tenant.Country,
-                BirthDate = tenant.BirthDate
+                BirthDate = tenant.User.DateOfBirth
             }).ToList()
         };
 
@@ -84,21 +94,42 @@ public class RoomService : IRoomService
         return resultContract;
     }
     
-    public async Task<RoomResponseDto> AssignTenant(AssignTenantDto input)
+    public async Task AssignTenant(AssignTenantDto input, Guid userId)
     {
         var repository = _unitOfWork.GetRooms();
-        ValidationResult validationResult = await _assignTenantValidator.ValidateAsync(input);
-        if (!validationResult.IsValid)
+        var tenantRepository = _unitOfWork.GetTenants();
+
+        if (input.TenantId == null)
         {
-            throw new ValidationException(validationResult.Errors);
+            var tenant = await tenantRepository.GetByUserIdAsync(userId);
+            if (tenant == null)
+            {
+                
+                var tenantEntity = new Tenant
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = userId,
+                };
+
+                tenant = await tenantRepository.CreateAsync(tenantEntity!).ConfigureAwait(false);
+            }
+            input.TenantId = tenant.Id;
         }
-        var result = await repository.AssignTenantAsync(input).ConfigureAwait(false);
+        var existingAssignment = await repository.IsTenantAssignedToRoomAsync(input.TenantId.Value, input.Roomid).ConfigureAwait(false);
+        if (existingAssignment)
+        { 
+            throw new InvalidOperationException("The tenant is already assigned to this room.");
+        }
+        
+        var roomTenant = new RoomTenant
+        {
+            RoomId = input.Roomid,
+            TenantId = input.TenantId!.Value,
+        };
+        
+        await repository.AssignTenantAsync(roomTenant).ConfigureAwait(false);
 
         await _unitOfWork.Commit().ConfigureAwait(false);
-
-        var resultContract = ToContract(result);
-
-        return resultContract;
     }
     
     public async Task<bool> Remove(Guid id)
@@ -163,5 +194,14 @@ public class RoomService : IRoomService
         var result = ToContract(entity);
 
         return result;
+    }
+    
+    public async Task<Guid?> GetOwnerIdByRoomId(Guid roomId)
+    {
+        var repository = _unitOfWork.GetRooms();
+
+        var foundColivingId = await repository.GetOwnerIdByRoomId(roomId);
+
+        return foundColivingId;
     }
 }

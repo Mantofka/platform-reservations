@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ColivingReservationsDbContext))]
-    partial class ColivingReservationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241113174651_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,21 +52,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasIndex("TenantId");
 
                     b.ToTable("Maintenances");
-                });
-
-            modelBuilder.Entity("Infrastructure.Domain.RoomTenant.RoomTenant", b =>
-                {
-                    b.Property<Guid>("RoomId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("RoomId", "TenantId");
-
-                    b.HasIndex("TenantId");
-
-                    b.ToTable("RoomTenants");
                 });
 
             modelBuilder.Entity("Infrastructure.Domain.Rooms.Room", b =>
@@ -104,12 +92,30 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Tenants");
                 });
@@ -205,10 +211,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -362,15 +364,15 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("RoomTenant", b =>
                 {
-                    b.Property<Guid>("RoomsId")
+                    b.Property<Guid>("RoomId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("TenantsId")
+                    b.Property<Guid>("TenantId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("RoomsId", "TenantsId");
+                    b.HasKey("RoomId", "TenantId");
 
-                    b.HasIndex("TenantsId");
+                    b.HasIndex("TenantId");
 
                     b.ToTable("RoomTenant");
                 });
@@ -394,25 +396,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Tenant");
                 });
 
-            modelBuilder.Entity("Infrastructure.Domain.RoomTenant.RoomTenant", b =>
-                {
-                    b.HasOne("Infrastructure.Domain.Rooms.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Infrastructure.Domain.Tenants.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Room");
-
-                    b.Navigation("Tenant");
-                });
-
             modelBuilder.Entity("Infrastructure.Domain.Rooms.Room", b =>
                 {
                     b.HasOne("Infrastructure.Persistence.Abstractions.Models.Coliving.Coliving", "Coliving")
@@ -422,17 +405,6 @@ namespace Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Coliving");
-                });
-
-            modelBuilder.Entity("Infrastructure.Domain.Tenants.Tenant", b =>
-                {
-                    b.HasOne("Infrastructure.Domain.User.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Infrastructure.Persistence.Abstractions.Models.Coliving.Coliving", b =>
@@ -501,13 +473,13 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.HasOne("Infrastructure.Domain.Rooms.Room", null)
                         .WithMany()
-                        .HasForeignKey("RoomsId")
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Infrastructure.Domain.Tenants.Tenant", null)
                         .WithMany()
-                        .HasForeignKey("TenantsId")
+                        .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

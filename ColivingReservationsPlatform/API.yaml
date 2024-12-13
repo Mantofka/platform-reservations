@@ -398,6 +398,8 @@ components:
           type: string
         phoneNumber:
           type: string
+        userId:
+          type: string
         representerName:
           type: string
         rooms:
@@ -436,6 +438,10 @@ components:
         phoneNumber:
           type: string
           description: Phone number is required.
+        userId:
+          type: string
+          format: uuid
+          nullable: true
     RoomResponseDto:
       type: object
       properties:
@@ -495,8 +501,6 @@ components:
           type: string
         email:
           type: string
-        country:
-          type: string
         rooms:
           type: array
           items:
@@ -507,16 +511,6 @@ components:
         id:
           type: string
           nullable: true
-        name:
+        userId:
           type: string
-        surname:
-          type: string
-        birthDate:
-          type: string
-          format: date-time
-        phoneNumber:
-          type: string
-        email:
-          type: string
-        country:
-          type: string
+          nullable: true

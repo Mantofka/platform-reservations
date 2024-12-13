@@ -32,7 +32,7 @@ public class TenantService : ITenantService
     private static TenantResponseDto ToContract(Tenant tenant)
     {
         var rooms = tenant.Rooms != null
-            ? tenant.Rooms.Select(room => new RoomResponseDto()
+            ? tenant.Rooms.Select(room => new RoomResponseDto
             {
                 Id = room.Id,
                 Number = room.Number,
@@ -42,16 +42,16 @@ public class TenantService : ITenantService
                 Price = room.Price,
             }).ToList()
             : [];
-        var result = new TenantResponseDto()
+        var result = new TenantResponseDto
         {
             Id = tenant.Id,
-            Name = tenant.Name,
-            Surname = tenant.Surname,
-            BirthDate = tenant.BirthDate,
-            PhoneNumber = tenant.PhoneNumber,
-            Email = tenant.Email,
-            Country = tenant.Country,
+            Name = tenant.User.Name,
+            Surname = tenant.User.Surname,
+            BirthDate = tenant.User.DateOfBirth,
+            PhoneNumber = tenant.User.PhoneNumber!,
+            Email = tenant.User.Email!,
             Rooms = rooms,
+            
         };
 
         return result;
@@ -105,18 +105,13 @@ public class TenantService : ITenantService
         var result = new Tenant
         {
             Id = tenant.Id ?? Guid.NewGuid(),
-            Name = tenant.Name,
-            Surname = tenant.Surname,
-            BirthDate = tenant.BirthDate,
-            Email = tenant.Email,
-            PhoneNumber = tenant.PhoneNumber,
-            Country = tenant.Country,
+            UserId = tenant.UserId,
         };
 
         return result;
     }
     
-    public async Task<TenantResponseDto?> Edit(Guid id, TenantCreateDto tenant)
+    public async Task<TenantResponseDto?> Edit(Guid id, TenantUpdateDto tenant)
     {
         var repository = _unitOfWork.GetTenants();
         var entity = await repository.GetByIdAsync(id).ConfigureAwait(false);
@@ -126,12 +121,11 @@ public class TenantService : ITenantService
             return null;
         }
 
-        entity.Name = tenant.Name;
-        entity.Surname = tenant.Surname;
-        entity.PhoneNumber = tenant.PhoneNumber;
-        entity.BirthDate = tenant.BirthDate;
-        entity.Email = tenant.Email;
-        entity.Country = tenant.Country;
+        entity.User.Name = tenant.Name;
+        entity.User.Surname = tenant.Surname;
+        entity.User.PhoneNumber = tenant.PhoneNumber;
+        entity.User.Email = tenant.Email;
+        entity.User.DateOfBirth = tenant.BirthDate;
 
         await _unitOfWork.Commit().ConfigureAwait(false);
         
@@ -139,4 +133,24 @@ public class TenantService : ITenantService
 
         return result;
     }
+
+    public async Task<TenantResponseDto> GetCurrentTenant(Guid userId)
+    {
+        var repository = _unitOfWork.GetTenants();
+        var tenant = await repository.GetByUserIdAsync(userId);
+        if (tenant == null)
+        {
+                
+            var tenantEntity = new Tenant
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+            };
+            
+            await _unitOfWork.Commit().ConfigureAwait(false);
+            return ToContract(tenantEntity);
+        }
+        return ToContract(tenant);
+    }
+    
 }

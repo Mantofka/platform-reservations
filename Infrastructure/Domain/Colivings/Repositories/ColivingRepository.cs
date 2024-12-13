@@ -1,3 +1,4 @@
+using Infrastructure.Domain.Rooms;
 using Infrastructure.Domain.Tenants;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Abstractions;
@@ -21,27 +22,49 @@ public class ColivingRepository : IColivingRepository
         return await query.ToArrayAsync().ConfigureAwait(false);
     }
     
+    public async Task<Coliving[]> GetPagedOwnerColivingList(Guid userId)
+    {
+        var query = _context.Set<Coliving>().Where(c => c.UserId == userId).AsQueryable();
+        return await query.ToArrayAsync().ConfigureAwait(false);
+    }
+    
+    public async Task<Guid?> GetOwnerIdByColivingId(Guid colivingId)
+    {
+        var coliving = await _context.Set<Coliving>().Where(c => c.Id == colivingId).FirstOrDefaultAsync();
+        return coliving?.UserId;
+    }
+    
     public async Task<Tenant[]> GetTenants(Guid id, Guid roomId)
     {
-        var coliving = await _context.Set<Coliving>()
-            .Include(c => c.Rooms)
-            .ThenInclude(r => r.Tenants)
-            .FirstOrDefaultAsync(c => c.Id == id)
+        var tenants = await _context.Set<RoomTenant.RoomTenant>()
+            .Where(rt => rt.RoomId == roomId)
+            .Include(rt => rt.Tenant)
+            .ThenInclude(t => t.User)
+            .Select(rt => rt.Tenant)
+            .ToArrayAsync()
             .ConfigureAwait(false);
-
-        if (coliving == null)
+        
+        if (!tenants.Any())
         {
-            throw new KeyNotFoundException($"Coliving with ID {id} not found.");
+            var colivingExists = await _context.Set<Coliving>()
+                .AnyAsync(c => c.Id == id)
+                .ConfigureAwait(false);
+
+            if (!colivingExists)
+            {
+                throw new KeyNotFoundException($"Coliving with ID {id} not found.");
+            }
+
+            var roomExists = await _context.Set<Room>()
+                .AnyAsync(r => r.Id == roomId && r.ColivingId == id)
+                .ConfigureAwait(false);
+
+            if (!roomExists)
+            {
+                throw new KeyNotFoundException($"Room with ID {roomId} not found in Coliving with ID {id}.");
+            }
         }
-
-        var room = coliving.Rooms.FirstOrDefault(r => r.Id == roomId);
-
-        if (room == null)
-        {
-            throw new KeyNotFoundException($"Room with ID {roomId} not found in Coliving with ID {id}.");
-        }
-
-        return room.Tenants.ToArray();
+        return tenants;
     }
     
     public async Task<Coliving> CreateAsync(Coliving coliving)

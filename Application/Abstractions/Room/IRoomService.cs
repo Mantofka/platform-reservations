@@ -6,6 +6,8 @@ namespace Application.Abstractions.Room;
 public interface IRoomService
 {
     Task<RoomResponseDto[]> GetPagedList();
+    
+    Task<RoomResponseDto[]> GetPagedColivingRoomsList(Guid colivingId);
 
     Task<RoomResponseDto?> FindById(Guid id);
     
@@ -13,7 +15,9 @@ public interface IRoomService
     
     Task<RoomResponseDto?> Edit(Guid id, RoomCreateDto input);
 
-    Task<RoomResponseDto> AssignTenant(AssignTenantDto input);
+    Task AssignTenant(AssignTenantDto input, Guid userId);
     
     Task<bool> Remove(Guid id);
+    
+    Task<Guid?> GetOwnerIdByRoomId(Guid colivingId);
 }

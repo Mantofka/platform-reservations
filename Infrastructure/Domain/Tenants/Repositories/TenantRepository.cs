@@ -13,7 +13,7 @@ public class TenantRepository : ITenantRepository
     }
     public async Task<Tenant[]> GetPagedList()
     {
-        var query = _context.Set<Tenant>().Include(x => x.Rooms).AsQueryable();
+        var query = _context.Set<Tenant>().Include(x => x.Rooms).Include(x => x.User).AsQueryable();
         return await query.ToArrayAsync().ConfigureAwait(false);
     }
     
@@ -59,7 +59,20 @@ public class TenantRepository : ITenantRepository
         var result = await _context
             .Set<Tenant>()
             .Include(x => x.Rooms)
+            .Include(x => x.User)
             .SingleOrDefaultAsync(j => j.Id == id)
+            .ConfigureAwait(false);
+
+        return result;
+    }
+    
+    public async Task<Tenant?> GetByUserIdAsync(Guid id)
+    {
+        var result = await _context
+            .Set<Tenant>()
+            .Include(x => x.Rooms)
+            .Include(x => x.User)
+            .SingleOrDefaultAsync(j => j.UserId == id)
             .ConfigureAwait(false);
 
         return result;

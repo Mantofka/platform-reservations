@@ -1,6 +1,8 @@
 using Application.Abstractions.Room;
+using Application.Abstractions.User;
 using Application.Contracts.Room;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ColivingReservationsPlatform.Controllers
@@ -10,9 +12,11 @@ namespace ColivingReservationsPlatform.Controllers
     public class RoomController : ControllerBase
     {
         private readonly IRoomService _service;
-        public RoomController(IRoomService service)
+        private readonly IUserContextService _userContextService;
+        public RoomController(IRoomService service, IUserContextService userContextService)
         {
             _service = service;
+            _userContextService = userContextService;
         }
 
         [HttpGet]
@@ -21,6 +25,16 @@ namespace ColivingReservationsPlatform.Controllers
             var rooms = await _service.GetPagedList();
             var result = Ok(rooms);
 
+            return result;
+        }
+        
+        [HttpGet("coliving/{colivingId}")]
+        public async Task<ActionResult<RoomResponseDto[]>> GetColivingRooms(Guid colivingId)
+        {
+            var rooms = await _service.GetPagedColivingRoomsList(colivingId);
+            
+            var result = Ok(rooms);
+        
             return result;
         }
     
@@ -37,6 +51,7 @@ namespace ColivingReservationsPlatform.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ColivingOwner, Administrator")]
         public async Task<ActionResult<RoomResponseDto>> Post([FromBody] RoomCreateDto input)
         {
             try
@@ -59,20 +74,47 @@ namespace ColivingReservationsPlatform.Controllers
         }
         
         [HttpPost("assignTenant")]
+        [Authorize(Roles = "ColivingOwner, Tenant, Administrator")]
         public async Task<ActionResult<RoomResponseDto>> Post([FromBody] AssignTenantDto input)
         {
             try
             {
-                var room = await _service.AssignTenant(input);
+                var userId = _userContextService.GetUserId();
+                var userRole = _userContextService.GetUserRole();
 
-                var result = Accepted(room);
+                if (userRole == "ColivingOwner")
+                {
+                    var colivingOwnerId = await _service.GetOwnerIdByRoomId(input.Roomid);
 
-                return result;
+                    if (colivingOwnerId == null)
+                    {
+                        return StatusCode(400, new { Error = "Coliving does not exist." });
+                    }
+
+                    if (colivingOwnerId != userId)
+                    {
+                        return StatusCode(400,
+                            new
+                            {
+                                Error = "You do not have permission to assign tenants to room that not belongs to you."
+                            });
+                    }
+                }
+
+                await _service.AssignTenant(input, userId);
+
+                return NoContent();
+
             }
             catch (ValidationException ex)
             {
                 return BadRequest(new { Errors = ex.Errors });
             }
+            catch (InvalidOperationException e)
+            {
+                return StatusCode(400, new { Error = "The tenant is already assigned to this room." });
+            }
+            
             catch (Exception e)
             {
                 return StatusCode(500, new { Error = "An unexpected error occurred. Please try again later." });
@@ -81,20 +123,52 @@ namespace ColivingReservationsPlatform.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "ColivingOwner, Administrator")]
         public async Task<ActionResult<RoomResponseDto>> Put(Guid id, [FromBody] RoomCreateDto input)
         {
-            var room = await _service.Edit(id, input);
+            var userRole = _userContextService.GetUserRole();
+            var userId = _userContextService.GetUserId();
+            try
+            {
+                if (userRole == "ColivingOwner")
+                {
+                    var colivingOwnerId = await _service.GetOwnerIdByRoomId(id);
 
-            var result = Accepted(room);
+                    if (colivingOwnerId != userId)
+                    {
+                        return StatusCode(401, new { Error = "You do not have permission to edit this room." });
+                    }
+                }
+                
+                var room = await _service.Edit(id, input);
 
-            return result;
+                var result = Accepted(room);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                return NoContent();
+            }
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ColivingOwner, Administrator")]
         public async Task<ActionResult> Delete(Guid id)
         {
+            var userRole = _userContextService.GetUserRole();
+            var userId = _userContextService.GetUserId();
             try
             {
+                if (userRole == "ColivingOwner")
+                {
+                    var colivingOwnerId = await _service.GetOwnerIdByRoomId(id);
+
+                    if (colivingOwnerId != userId)
+                    {
+                        return StatusCode(401, new { Error = "You do not have permission to delete this room." });
+                    }
+                }
                 await _service.Remove(id);
 
                 var result = NoContent();

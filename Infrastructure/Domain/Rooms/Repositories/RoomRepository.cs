@@ -20,6 +20,21 @@ public class RoomRepository : IRoomRepository
         return await query.ToArrayAsync().ConfigureAwait(false);
     }
     
+    public async Task<bool> IsTenantAssignedToRoomAsync(Guid tenantId, Guid roomId)
+    {
+        return await _context.Set<RoomTenant.RoomTenant>()
+            .AnyAsync(rt => rt.TenantId == tenantId && rt.RoomId == roomId)
+            .ConfigureAwait(false);
+    }
+    
+    public async Task<Room[]> GetPagedColivingRoomList(Guid colivingId)
+    {
+        var query = _context.Set<Room>().Include(x => x.Coliving).Where(r => r.ColivingId == colivingId).AsQueryable();
+        return await query.ToArrayAsync().ConfigureAwait(false);
+    }
+    
+    
+    
     public async Task<Room> CreateAsync(Room tenant)
     {
         var coliving = await _context.Colivings
@@ -51,20 +66,11 @@ public class RoomRepository : IRoomRepository
         }
     }
 
-    public async Task<Room> AssignTenantAsync(AssignTenantDto input)
+    public async Task AssignTenantAsync(RoomTenant.RoomTenant tenant)
     {
-        var room = await _context.Set<Room>().Include(r => r.Tenants).Include(r => r.Coliving).SingleOrDefaultAsync(j => j.Id == input.Roomid).ConfigureAwait(false);
-        if (room == null)
-            throw new Exception($"Room with ID {input.Roomid} not found.");
-            
-        var tenant = await _context.Set<Tenant>().SingleOrDefaultAsync(j => j.Id == input.TenantId).ConfigureAwait(false);
-        if (tenant == null)
-            throw new Exception($"Tenant with ID {input.TenantId} not found.");
-        
-        room.Tenants.Add(tenant);
-        
+        await _context.AddAsync(tenant).ConfigureAwait(false);
         await _context.SaveChangesAsync().ConfigureAwait(false);
-        return room;
+        
     }
     
     public async Task<Room?> GetByIdAsync(Guid id)
@@ -77,5 +83,11 @@ public class RoomRepository : IRoomRepository
             .ConfigureAwait(false);
 
         return result;
+    }
+    
+    public async Task<Guid?> GetOwnerIdByRoomId(Guid roomId)
+    {
+        var coliving = await _context.Set<Room>().Include(r => r.Coliving).Where(c => c.Id == roomId).FirstOrDefaultAsync();
+        return coliving?.Coliving.UserId;
     }
 }

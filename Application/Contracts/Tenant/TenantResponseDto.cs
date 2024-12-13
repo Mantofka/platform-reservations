@@ -10,6 +10,5 @@ public class TenantResponseDto
     public DateTime BirthDate { get; set; }
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
-    public string Country { get; set; }
     public List<RoomResponseDto> Rooms { get; set; }
 }

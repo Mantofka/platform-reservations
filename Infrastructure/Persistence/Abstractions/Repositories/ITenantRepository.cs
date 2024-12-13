@@ -7,6 +7,8 @@ public interface ITenantRepository
     Task<Tenant[]> GetPagedList();
 
     Task<Tenant?> GetByIdAsync(Guid id);
+    
+    Task<Tenant?> GetByUserIdAsync(Guid id);
 
     Task<Tenant> CreateAsync(Tenant tenant);
 
