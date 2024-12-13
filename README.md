@@ -6,26 +6,18 @@ The **Coliving Reservation System** is designed to streamline dormitory (colivin
 
 The system supports four types of users: **Tenant**, **Coliving Owner**, and **Administrator**.
 
-### **Resident Capabilities**
-- Track payment history.
-- Make payments.
-- Report maintenance issues.
-- Monitor the status of maintenance requests.
-- Extend their stay.
+### **Tenant Capabilities**
 - Submit a request to live in coliving.
 
-### **Dormitory Administrator Capabilities**
+### **Coliving Owner Capabilities**
 - Submit requests to create new coliving spaces.
 - Track room occupancy and availability.
 - Create and edit coliving spaces and their information.
 - Add or remove rooms.
 - Update room details (e.g., amenities).
-- Change the status of maintenance history (e.g., resolve issues).
-- Send payment requests to residents.
 
-### **System Administrator Capabilities**
-- Approve or reject requests for creating new coliving spaces.
-- Manage system-wide settings and configurations.
+### **Administrator Capabilities**
+- Edit tenant information
 
 ## **Technologies**
 
