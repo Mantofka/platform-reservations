@@ -8,6 +8,8 @@ namespace Infrastructure.Persistence.Abstractions;
 public interface IColivingRepository
 {
     Task<Coliving[]> GetPagedList();
+    
+    Task<Coliving[]> GetPagedOwnerColivingList(Guid userId);
 
     Task<Coliving?> GetByIdAsync(Guid id);
     
@@ -16,4 +18,5 @@ public interface IColivingRepository
     Task<Coliving> CreateAsync(Coliving coliving);
 
     Task RemoveAsync(Guid id);
+    Task<Guid?> GetOwnerIdByColivingId(Guid id);
 }

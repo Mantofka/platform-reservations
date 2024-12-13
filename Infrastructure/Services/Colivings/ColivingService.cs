@@ -2,7 +2,6 @@ using Application.Abstractions.Colivings;
 using Application.Contracts;
 using Application.Contracts.Room;
 using Application.Contracts.Tenant;
-using Application.Validators;
 using FluentValidation;
 using FluentValidation.Results;
 using Infrastructure.Domain.Tenants;
@@ -41,16 +40,27 @@ public class ColivingService : IColivingService
         return result;
     }
     
+    public async Task<ColivingResponseDto[]> GetPagedOwnerColivings(Guid userId)
+    {
+        var repository = _unitOfWork.GetColivings();
+        var entities = await repository.GetPagedOwnerColivingList(userId).ConfigureAwait(false);
+        
+        var result = entities.Select(ToContract).ToArray();
+
+        return result;
+    }
+
+    
     private static TenantResponseDto ToTenantContract(Tenant tenant)
     {
         var result = new TenantResponseDto
         {
             Id = tenant.Id,
-            Name = tenant.Name,
-            Email = tenant.Email,
-            Surname = tenant.Surname,
-            PhoneNumber = tenant.PhoneNumber,
-            BirthDate = tenant.BirthDate
+            Name = tenant.User.Name,
+            Email = tenant.User.Email,
+            Surname = tenant.User.Surname,
+            PhoneNumber = tenant.User.PhoneNumber,
+            BirthDate = tenant.User.DateOfBirth
         };
 
         return result;
@@ -74,18 +84,20 @@ public class ColivingService : IColivingService
             Id = coliving.Id,
             Name = coliving.Name,
             Address = coliving.Address,
-            RepresenterName = coliving.RepresenterName,
-            PhoneNumber = coliving.PhoneNumber,
+            Description = coliving.Description,
             Email = coliving.Email,
+            UserId = coliving.UserId,
         };
 
         return result;
     }
     
-    public async Task<ColivingResponseDto> Create(ColivingCreateDto input)
+    public async Task<ColivingResponseDto> Create(ColivingCreateDto input, Guid userId)
     {
         var repository = _unitOfWork.GetColivings();
         var entity = ToEntity(input);
+        entity.UserId = userId;
+        
         ValidationResult validationResult = await _validator.ValidateAsync(input);
         if (!validationResult.IsValid)
         {
@@ -133,9 +145,8 @@ public class ColivingService : IColivingService
             Id = coliving.Id ?? Guid.NewGuid(),
             Name = coliving.Name,
             Address = coliving.Address,
-            RepresenterName = coliving.RepresenterName,
+            Description = coliving.Description,
             Email = coliving.Email,
-            PhoneNumber = coliving.PhoneNumber,
         };
 
         return result;
@@ -152,15 +163,24 @@ public class ColivingService : IColivingService
         }
 
         entity.Address = coliving.Address;
-        entity.RepresenterName = coliving.RepresenterName;
-        entity.PhoneNumber = coliving.PhoneNumber;
         entity.Name = coliving.Name;
+        entity.Description = coliving.Description;
         entity.Email = coliving.Email;
+        entity.UserId = coliving.UserId!.Value;
 
         await _unitOfWork.Commit().ConfigureAwait(false);
         
         var result = ToContract(entity);
 
         return result;
+    }
+    
+    public async Task<Guid?> GetOwnerIdByColivingId(Guid colivingId)
+    {
+        var repository = _unitOfWork.GetColivings();
+
+        var foundColivingId = await repository.GetOwnerIdByColivingId(colivingId);
+
+        return foundColivingId;
     }
 }

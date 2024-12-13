@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using Application.Abstractions.Colivings;
+using Application.Abstractions.User;
 using Application.Contracts;
 using Application.Contracts.Tenant;
 using FluentValidation;
@@ -11,15 +13,19 @@ namespace ColivingReservationsPlatform.Controllers;
 public class ColivingController : ControllerBase
 {
     private readonly IColivingService _service;
+    private readonly IUserContextService _userContextService;
 
-    public ColivingController(IColivingService service)
+    public ColivingController(IColivingService service, IUserContextService userContextService)
     {
         _service = service;
+        _userContextService = userContextService;
     }
 
     [HttpGet]
     public async Task<ActionResult<ColivingResponseDto[]>> Get()
     {
+        var user = _userContextService.GetUser();
+
         var colivings = await _service.GetPagedList();
         var result = Ok(colivings);
 
@@ -37,11 +43,34 @@ public class ColivingController : ControllerBase
         return Ok(coliving);
     }
     
+    [HttpGet("owner")]
+    [Authorize(Roles = "ColivingOwner")]
+    public async Task<ActionResult<ColivingResponseDto[]>> GetOwnerColivings()
+    {
+        var userId = _userContextService.GetUserId();
+
+        var colivings = await _service.GetPagedOwnerColivings(userId);
+        var result = Ok(colivings);
+
+        return result;
+    }
+    
     [HttpGet("{id}/room/{roomId}/tenants")]
+    [Authorize(Roles = "ColivingOwner, Administrator")]
     public async Task<ActionResult<ColivingResponseDto>> GetTenants(Guid id, Guid roomId)
     {
+        var userId = _userContextService.GetUserId();
+        var userRole = _userContextService.GetUserRole();
         try
         {
+            if (userRole == "ColivingOwner")
+            {
+                var colivingOwnerId = await _service.GetOwnerIdByColivingId(id);
+                if (colivingOwnerId != userId)
+                {
+                    return StatusCode(400, new { Error = "You do not have permission check this coliving tenants." });
+                }
+            }
             var tenants = await _service.GetTenants(id, roomId);
             return Ok(tenants);
         }
@@ -53,11 +82,18 @@ public class ColivingController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "ColivingOwner, Administrator")]
     public async Task<ActionResult<ColivingResponseDto>> Post([FromBody] ColivingCreateDto input)
     {
+        var userId = _userContextService.GetUserId();
+        var userRole = _userContextService.GetUserRole();
         try
         {
-            var result = await _service.Create(input);
+            if (userRole == "Administrator")
+            {
+                userId = input.UserId!.Value;
+            }
+            var result = await _service.Create(input, userId);
             return Created("created", result);
         }
         catch (ValidationException ex)
@@ -71,20 +107,52 @@ public class ColivingController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "ColivingOwner, Administrator")]
     public async Task<ActionResult<ColivingResponseDto>> Put(Guid id, [FromBody] ColivingCreateDto input)
     {
-        var coliving = await _service.Edit(id, input);
+        var userId = _userContextService.GetUserId();
+        var userRole = _userContextService.GetUserRole();
+        try
+        {
+            if (userRole == "ColivingOwner")
+            {
+                var colivingOwnerId = await _service.GetOwnerIdByColivingId(id);
 
-        var result = Accepted(coliving);
+                if (colivingOwnerId != userId)
+                {
+                    return StatusCode(400, new { Error = "You do not have permission to edit this coliving." });
+                }
+            }
+            
+            var coliving = await _service.Edit(id, input);
 
-        return result;
+            var result = Accepted(coliving);
+            
+            return result;
+        }
+        catch (Exception e)
+        {
+            return NoContent();
+        }
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "ColivingOwner, Administrator")]
     public async Task<ActionResult> Delete(Guid id)
     {
+        var userId = _userContextService.GetUserId();
+        var userRole = _userContextService.GetUserRole();
         try
         {
+            if (userRole == "ColivingOwner")
+            {
+                var colivingOwnerId = await _service.GetOwnerIdByColivingId(id);
+
+                if (colivingOwnerId != userId)
+                {
+                    return StatusCode(401, new { Error = "You do not have permission to delete this coliving." });
+                }
+            }
             await _service.Remove(id);
 
             var result = NoContent();

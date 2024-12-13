@@ -1,13 +1,15 @@
 using Infrastructure.Domain.Maintenance;
 using Infrastructure.Domain.Rooms;
+using Infrastructure.Domain.RoomTenant;
 using Infrastructure.Domain.Tenants;
+using Infrastructure.Domain.User;
 using Infrastructure.Persistence.Abstractions.Models.Coliving;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
-public class ColivingReservationsDbContext : IdentityDbContext<IdentityUser>
+public class ColivingReservationsDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
     public ColivingReservationsDbContext(DbContextOptions<ColivingReservationsDbContext> options)
         : base(options)
@@ -20,7 +22,11 @@ public class ColivingReservationsDbContext : IdentityDbContext<IdentityUser>
     
     public DbSet<Tenant> Tenants { get; set; }
     
+    public DbSet<User> Users { get; set; }
+    
     public DbSet<Maintenance> Maintenances { get; set; }
+    
+    public DbSet<RoomTenant> RoomTenants { get; set; }
     
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)
     {
@@ -30,23 +36,15 @@ public class ColivingReservationsDbContext : IdentityDbContext<IdentityUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Room>()
             .HasOne(r => r.Coliving)
             .WithMany(r => r.Rooms)
             .HasForeignKey(r => r.ColivingId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        modelBuilder.Entity<Room>()
-            .HasMany(r => r.Tenants)
-            .WithMany(t => t.Rooms)
-            .UsingEntity<Dictionary<string, object>>(
-                "RoomTenant",
-                room => room.HasOne<Tenant>().WithMany().HasForeignKey("TenantId"),
-                tenant => tenant.HasOne<Room>().WithMany().HasForeignKey("RoomId"),
-                join =>
-                {
-                    join.HasKey("RoomId", "TenantId");
-                });
+        
+        modelBuilder.Entity<RoomTenant>()
+            .HasKey(rt => new { rt.RoomId, rt.TenantId });
         
         modelBuilder.Entity<Maintenance>()
             .HasOne(r => r.AssignedRoom)

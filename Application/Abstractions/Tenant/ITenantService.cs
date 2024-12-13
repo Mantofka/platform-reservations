@@ -10,7 +10,9 @@ public interface ITenantService
     
     Task<TenantResponseDto> Create(TenantCreateDto input);
     
-    Task<TenantResponseDto?> Edit(Guid id, TenantCreateDto input);
+    Task<TenantResponseDto?> Edit(Guid id, TenantUpdateDto input);
     
     Task<bool> Remove(Guid id);
+    
+    Task<TenantResponseDto> GetCurrentTenant(Guid userId);
 }

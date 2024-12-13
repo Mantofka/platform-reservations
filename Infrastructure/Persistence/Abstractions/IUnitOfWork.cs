@@ -1,3 +1,5 @@
+using Application.Abstractions.User;
+
 namespace Infrastructure.Persistence.Abstractions;
 
 public interface IUnitOfWork : IDisposable
@@ -9,7 +11,6 @@ public interface IUnitOfWork : IDisposable
     ITenantRepository GetTenants();
     
     IMaintenanceRepository GetMaintenances();
-    
     
     Task Commit();
 

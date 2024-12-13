@@ -49,8 +49,8 @@ public class MaintenanceService : IMaintenanceService
             Tenant = new TenantResponseDto
             {
                 Id = maintenance.Tenant.Id,
-                Email = maintenance.Tenant.Email,
-                PhoneNumber = maintenance.Tenant.PhoneNumber,
+                Email = maintenance.Tenant.User.Email!,
+                PhoneNumber = maintenance.Tenant.User.PhoneNumber!,
             },
             Room = new RoomResponseDto
             {

@@ -1,4 +1,5 @@
 using Application.Abstractions.Tenant;
+using Application.Abstractions.User;
 using Application.Contracts.Tenant;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -8,17 +9,19 @@ namespace ColivingReservationsPlatform.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "administrator,coliving-owner")]
 public class TenantController : ControllerBase
 {
     private readonly ITenantService _service;
+    private readonly IUserContextService _userContextService;
 
-    public TenantController(ITenantService service)
+    public TenantController(ITenantService service, IUserContextService userContextService)
     {
         _service = service;
+        _userContextService = userContextService;
     }
 
     [HttpGet]
+    [Authorize(Roles = "ColivingOwner, Administrator")]
     public async Task<ActionResult<TenantResponseDto[]>> Get()
     {
         var tenants = await _service.GetPagedList();
@@ -26,8 +29,20 @@ public class TenantController : ControllerBase
 
         return result;
     }
+    
+    [HttpGet("current")]
+    [Authorize(Roles = "Tenant")]
+    public async Task<ActionResult<TenantResponseDto>> GetTenant()
+    {
+        var userId = _userContextService.GetUserId();
+        var tenant = await _service.GetCurrentTenant(userId);
+        var result = Ok(tenant);
+
+        return result;
+    }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "ColivingOwner, Administrator")]
     public async Task<ActionResult<TenantResponseDto>> Get(Guid id)
     {
         var tenant = await _service.FindById(id);
@@ -41,6 +56,7 @@ public class TenantController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "ColivingOwner, Administrator")]
     public async Task<ActionResult<TenantResponseDto>> Post([FromBody] TenantCreateDto input)
     {
         try
@@ -59,7 +75,8 @@ public class TenantController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<TenantResponseDto>> Put(Guid id, [FromBody] TenantCreateDto input)
+    [Authorize(Roles = "ColivingOwner, Administrator, Tenant")]
+    public async Task<ActionResult<TenantResponseDto>> Put(Guid id, [FromBody] TenantUpdateDto input)
     {
         var tenant = await _service.Edit(id, input);
 
