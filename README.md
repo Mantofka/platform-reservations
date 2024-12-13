@@ -4,7 +4,7 @@ The **Coliving Reservation System** is designed to streamline dormitory (colivin
 
 ## **Functional Requirements**
 
-The system supports four types of users: **Guest**, **Resident**, **Dormitory Administrator**, and **System Administrator**.
+The system supports four types of users: **Tenant**, **Coliving Owner**, and **Administrator**.
 
 ### **Guest Capabilities**
 - View available coliving spaces.
