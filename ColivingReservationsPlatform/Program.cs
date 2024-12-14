@@ -10,9 +10,9 @@ startup.ConfigureServices(builder.Services);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("https://platform-reservations-web--coliving-web.europe-west4.hosted.app")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -20,7 +20,8 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseCors("AllowAll");
+//app.UseCors("AllowAll");
+app.UseCors("AllowSpecificOrigin");
 
 using (var scope = app.Services.CreateScope())
 {
