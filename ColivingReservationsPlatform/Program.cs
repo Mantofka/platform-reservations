@@ -10,20 +10,17 @@ startup.ConfigureServices(builder.Services);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin", policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        policy
-            .AllowAnyOrigin()
+        policy.AllowAnyOrigin()
             .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
+            .AllowAnyMethod();
     });
 });
 
 var app = builder.Build();
 
-//app.UseCors("AllowAll");
-app.UseCors("AllowSpecificOrigin");
+app.UseCors("AllowAll");
 
 using (var scope = app.Services.CreateScope())
 {
